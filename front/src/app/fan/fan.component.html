@@ -1,0 +1,44 @@
+<section class="container">
+    <div class="row">
+        <div class="alert alert-primary full-width" role="alert">
+            Listando Torcedores
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button mat-mini-fab>
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="row" ng>
+        <div class="col-md-12 text-right">
+            <button mat-mini-fab>
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="row pt-10">
+        <mat-card class="col-md-12">
+            <table class="table" *ngIf="fans && fans.total > 0">
+                <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Documento</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Telefone</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let fan of fans.data">
+                    <td>{{fan.name}}</td>
+                    <td>{{fan.document}}</td>
+                    <td>{{fan.email}}</td>
+                    <td>{{fan.phone}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </mat-card>
+    </div>
+</section>

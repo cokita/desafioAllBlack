@@ -1,0 +1,56 @@
+//@import "styles-variables";
+
+
+//@import '~bootstrap/scss/bootstrap-reboot';
+//@import '~bootstrap/scss/bootstrap-grid';
+@import '~bootstrap/scss/bootstrap';
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.full-width{
+  width: 100%;
+}
+
+@for $i from 1 through 150{
+  .fs-#{$i} { font-size: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .m-#{$i} { margin: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .mb-#{$i} { margin-bottom: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .mt-#{$i} { margin-top: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .ml-#{$i} { margin-left: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .mg-#{$i} { margin-right: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .p-#{$i} { padding: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .pb-#{$i} { padding-bottom: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .pt-#{$i} { padding-top: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .pl-#{$i} { padding-left: $i + 0px }
+}
+
+@for $i from 1 through 100{
+  .pg-#{$i} { padding-right: $i + 0px }
+}

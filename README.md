@@ -25,21 +25,26 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
       DB_PASSWORD=secret
       
   3) Angular 8
+    Bootstrap 4 (getbootstrap.com)
+    Angular Material (material.angular.io)
       
 # Requisitos para a Instalação (exceto os acima sitados):
   1) Composer
   2) NPM
       
 #Procedimentos para funcionamento:
-  1) API:
-    Caso não tenha feito, copie o arquivo .env.example e renomeie para .env
-    Entre na raiz da API, e execute o comando: composer install
-    Dê permissão de escrita nas pastas: "storage" e "bootstrap"
-    Execute na raiz: php artisan key:generate
-    
-  2) FRONT:
-    Entre na raiz e execute: npm install
-    
-  3) BANCO:
+  1) BANCO:
     . Entre no seu banco de dados e crie um banco de dados chamado "desafio";
     . Vá na raiz da api, no arquivo .env, na configuração DB_DATABASE, coloque o nome do banco criado: "desafio"
+    
+  2) API:
+    . Caso não tenha feito, copie o arquivo .env.example e renomeie para .env
+    . Entre na raiz da API, e execute o comando: composer install
+    . Dê permissão de escrita nas pastas: "storage" e "bootstrap"
+    . Execute na raiz: php artisan key:generate
+    . Execute na raiz: php artisan migrate
+    
+  3) FRONT:
+    . Entre na raiz e execute: npm install
+    
+  

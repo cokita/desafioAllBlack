@@ -25,12 +25,12 @@ class FanController extends Controller
     {
         $data = collect(request()->all());
 
-        if($data->get('per_page')){
-            $this->perPage = $data['per_page'];
+        if($data->get('pageSize')){
+            $this->perPage = $data['pageSize'];
         }
 
-        if(!empty($data['page'])){
-            $this->page = $data['page'];
+        if(!empty($data['pageIndex'])){
+            $this->page = $data['pageIndex']+1;
         }
 
         if(!empty($data['with'])){
@@ -52,6 +52,7 @@ class FanController extends Controller
             $fans->where('active','=', $data['active']);
         }
 
+        $fans->orderBy('id', 'desc');
         $fans = $fans->paginate($this->perPage, ['*'], 'page', $this->page);
         return response([
             'status' => 'success',
@@ -90,7 +91,7 @@ class FanController extends Controller
             DB::rollBack();
             return response([
                 'status' => 'error',
-                'message' => $e->getMessage()]);
+                'message' => $e->getMessage()], 400);
         }
     }
 
@@ -134,11 +135,75 @@ class FanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Fan  $fan
+     * @param  $fan_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fan $fan)
+    public function destroy($fan_id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $fan = Fan::find($fan_id);
+            if(!$fan)
+                throw new \Exception("Não encontramos nenhum torcedor com essas especificações.");
+
+            $fan->active = 0;
+            $fan->save();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'data' => $fan
+            ]);
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function saveByFile()
+    {
+        try{
+            $data = collect(request()->all());
+            if(!$data->get('file'))
+                throw new \Exception("Favor enviar o arquivo!");
+
+            $result = $this->fanService->saveByFile($data->get('file'));
+            return response(['status' => count($result['errors']) ? 'error' : 'success', 'data' => $result]);
+        }catch (\Exception $e){
+            return response([
+                'status' => 'error',
+                'message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function export(){
+        try {
+            $fans = Fan::query()
+                ->join('address as a', 'fans.address_id', '=', 'a.id')
+                ->where('fans.active', 1)
+                ->get(['name as Nome', 'email as Email', 'document as Documento', 'phone as Telefone',
+                    'a.address as Logradouro', 'a.neighborhood as Bairro', 'a.zipcode as CEP', 'a.city as Cidade', 'state as UF']);
+
+            if ($fans) {
+                $fileName = uniqid() . '.' . 'csv';
+                $csv = fopen(storage_path('app/public/') . '/' . $fileName, 'w');
+                fputcsv($csv, ["Nome","Email","Documento","Telefone","Logradouro","Bairro","CEP", "Cidade", "UF"], ';');
+                foreach ($fans->toArray() as $line) {
+                    fputcsv($csv, $line, ';');
+                }
+                fclose($csv);
+
+                $headers = array(
+                    'Content-Type: text/csv',
+                );
+
+                return response()->download(storage_path('app/public/') . '/' . $fileName, $fileName, $headers);
+            } else {
+                throw new \Exception("Nenhum torcedor para fazer download");
+            }
+        }catch (\Exception $e){
+            return response($e->getMessage(), 400);
+        }
     }
 }

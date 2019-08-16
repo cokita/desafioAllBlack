@@ -5,40 +5,117 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 text-right">
-            <button mat-mini-fab>
+        <div class="col-md-6">
+            <button mat-mini-fab (click)="fileInput.click()" color="primary"
+                    matTooltip="Clique aqui para fazer o upload de seu arquivo XML.">
+                <mat-icon>cloud_upload</mat-icon>
+                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" accept="text/xml"/>
+            </button>
+        </div>
+        <div class="col-md-6 text-right">
+            <button mat-mini-fab (click)="addFan = true">
                 <mat-icon>add</mat-icon>
             </button>
         </div>
     </div>
-    <div class="row" ng>
-        <div class="col-md-12 text-right">
-            <button mat-mini-fab>
-                <mat-icon>add</mat-icon>
-            </button>
+    <div class="row pt-20">
+        <div class="col-md-12" *ngIf="fileUpload">
+            <div class="alert alert-secondary" role="alert">
+                <b>Arquivo: </b> {{fileUpload.name}}<br>
+                <b>Tamanho: </b> {{fileUpload.newsize}} {{fileUpload.unit}}
+                <hr>
+                <div class="text-right">
+                    <button class="mg-10" mat-raised-button color="accent" type="button" (click)="upload()">
+                        ENVIAR E SALVAR
+                    </button>
+                    <button mat-raised-button color="primary" type="button" (click)="cancelUpload()">
+                        CANCELAR
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" *ngIf="resultUpload">
+            <div class="alert alert-secondary" role="alert">
+                <hr/>
+                <h4>
+                    <span class="text-danger" *ngIf="resultUpload.status == 'error'">OPS! Parece que tivemos alguns problemas.</span>
+                    <span class="text-success" *ngIf="resultUpload.status == 'success'">Parabéns, seu arquivo foi lido com sucesso e {{resultUpload.data.success}} torcedores foram inseridos
+                            de um total de {{resultUpload.data.total}}.</span>
+                </h4>
+                <div *ngIf="resultUpload.status == 'error'">
+
+                    <p>Do total de {{resultUpload.data.total}} torcedores, {{resultUpload.data.success}} foram inseridos
+                        com
+                        sucesso e
+                        {{resultUpload.data.errors.length}} falharam.</p>
+                    <div *ngFor="let error of resultUpload.data.errors; let i = index">
+                        <b>{{i+1}}) </b>{{error}}<br>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-right">
+                    <button mat-raised-button color="primary" type="button" (click)="resultUpload = null">
+                        FECHAR
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pt-20" *ngIf="addFan">
+        <div class="col-md-12">
+            <app-fan-create [fan]="fanEdit" (fanOutput)="receicerFan($event)"></app-fan-create>
         </div>
     </div>
     <div class="row pt-10">
         <mat-card class="col-md-12">
-            <table class="table" *ngIf="fans && fans.total > 0">
-                <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">Documento</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Telefone</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let fan of fans.data">
-                    <td>{{fan.name}}</td>
-                    <td>{{fan.document}}</td>
-                    <td>{{fan.email}}</td>
-                    <td>{{fan.phone}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div *ngIf="fans && fans.total > 0">
+                <div class="alert alert-info" role="alert">
+                    Foram encontrados {{fans.total}} de torcedores. Caso queira exportar este conteúdo para CSV,
+                    clique no botão abaixo.
+                    <div class="text-right">
+                        <button mat-raised-button color="primary" type="button" (click)="exportFans()">
+                            EXPORTAR
+                        </button>
 
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">#</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let fan of fans.data">
+                        <td>{{fan.name}}</td>
+                        <td>{{fan.document}}</td>
+                        <td>{{fan.email}}</td>
+                        <td>{{fan.phone}}</td>
+                        <td>
+                            <button mat-icon-button (click)="edit(fan)" color="accent">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="removeFan(fan)" color="warn">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <mat-paginator [length]="fans.total"
+                               [pageSize]="10"
+                               [pageSizeOptions]="pageSizeOptions"
+                               (page)="pageEvent = getFans($event)">
+                </mat-paginator>
+            </div>
+            <div class="alert alert-light" role="alert" *ngIf="!fans || fans.total <= 0">
+                Nenhum torcedor cadastrado até o momento.
+            </div>
         </mat-card>
     </div>
 </section>

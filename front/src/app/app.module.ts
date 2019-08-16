@@ -9,21 +9,27 @@ import {ErrorInterceptor} from "./helpers/error-interceptor";
 import {LayoutModule} from "./layout/layout.module";
 import { FanComponent } from './fan/fan.component';
 import { HomeComponent } from './home/home.component';
+import { FanCreateComponent } from './fan/fan-create/fan-create.component';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {HttpRequestInterceptor} from "./helpers/http-request-interceptor";
 
 @NgModule({
     declarations: [
         AppComponent,
         FanComponent,
-        HomeComponent
+        HomeComponent,
+        FanCreateComponent
     ],
     imports: [
+        BrowserAnimationsModule,
         BrowserModule,
         SharedModule,
         AppRoutingModule,
         LayoutModule
     ],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
     ],
     bootstrap: [AppComponent]
 })

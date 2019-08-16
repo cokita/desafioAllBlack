@@ -4,12 +4,16 @@ import {MaterialModule} from './material/material.module';
 import {MaskDirective} from "./material/mask.directive";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import {FilterPipeModule} from "ngx-filter-pipe";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
     declarations: [MaskDirective],
     imports: [
         CommonModule,
-        MaterialModule
+        MaterialModule,
+        FilterPipeModule,
+        NgxSpinnerModule
     ],
     exports: [
         CommonModule,
@@ -17,7 +21,9 @@ import {HttpClientModule} from "@angular/common/http";
         MaskDirective,
         FormsModule,
         ReactiveFormsModule,
-        HttpClientModule
+        HttpClientModule,
+        FilterPipeModule,
+        NgxSpinnerModule
     ]
 })
 export class SharedModule {

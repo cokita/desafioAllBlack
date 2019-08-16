@@ -17,5 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::group(['prefix' => 'fan'], function () {
+    Route::get('/export', ['as' => 'fan.export', 'uses' => 'FanController@export']);
+    Route::post('/save-by-file', ['as' => 'fan.save-by-file', 'uses' => 'FanController@saveByFile']);
+});
+
+
+
+
 Route::resource('fan', 'FanController');
 Route::resource('Address', 'FanController');

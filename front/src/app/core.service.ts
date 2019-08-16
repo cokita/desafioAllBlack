@@ -23,7 +23,7 @@ export class CoreService {
         });
     }
 
-    private getOptions(newHeader?){
+    private getOptions(newHeader?, isBlob?){
         let headers = new HttpHeaders({'Accept': 'application/json'});
         if(this.getToken()){
             headers = headers.set('Authorization', 'Bearer ' + this.getToken());
@@ -37,8 +37,14 @@ export class CoreService {
         }else{
             headers = headers.set('Content-Type', 'application/json');
         }
+        this.options = { headers: headers, params: {}};
 
-        return this.options = { headers: headers, params: {} };
+        let blob = null;
+        if(isBlob){
+            this.options['responseType'] = 'blob';
+        }
+
+        return this.options;
     }
 
     public post(url, data, headers?): Observable<any> {
@@ -51,14 +57,10 @@ export class CoreService {
             .delete(`${this.GC.API_ENDPOINT}/${url}`, this.options);
     }
 
-    public get(url, object?): Observable<any> {
-        this.getOptions();
-        if(object) {
-            this.setParamsOptions(object);
-        }
+    public get(url, object?, isBlob?): Observable<any> {
 
         return this.http
-            .get(`${this.GC.API_ENDPOINT}/${url}`, this.options);
+            .get(`${this.GC.API_ENDPOINT}/${url}`, this.getOptions(null, isBlob));
     }
 
     public update(url, object): Observable<any> {

@@ -1,0 +1,101 @@
+<form [formGroup]="fanForm" ngNativeValidate (ngSubmit)="save()">
+    <div class="row">
+        <div class="col-md-12 col-sm-6">
+            <mat-card>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Nome" formControlName="name" name="name" required>
+                            <mat-error *ngIf="validateFormControl.hasError('required')">
+                                O nome é <strong>obrigatório</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Documento" formControlName="document" name="document"
+                                   id="document" required
+                                   appMask="999.999.999-99">
+                            <mat-error *ngIf="validateFormControl.hasError('required')">
+                                O documento é <strong>obrigatório</strong>
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Email" formControlName="email" name="email">
+                            <mat-error *ngIf="validateFormControl.hasError('email')">O e-mail está
+                                <strong>inválido</strong></mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Telefone" formControlName="phone" name="phone"
+                                   appMask="(99) 99999-9999">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <hr/>
+                <div formGroupName="address">
+                    <h3>Endereço</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Cep" formControlName="zipcode" name="zipcode" appMask="99.999-999">
+                                <mat-error *ngIf="validateFormControl.hasError('required')">O CEP é
+                                    <strong>obrigatório</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Logradouro" formControlName="address" name="address">
+                                <mat-error *ngIf="validateFormControl.hasError('required')">O Logradouro é
+                                    <strong>obrigatório</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Bairro" formControlName="neighborhood" name="neighborhood">
+                                <mat-error *ngIf="validateFormControl.hasError('required')">O Bairro é
+                                    <strong>obrigatório</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="full-width">
+                                <input matInput placeholder="Cidade" formControlName="city" name="city">
+                                <mat-error *ngIf="validateFormControl.hasError('required')">A Cidade é
+                                    <strong>obrigatória</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field class="full-width">
+                                <mat-select placeholder="Estado" formControlName="state" name="state">
+                                    <mat-option *ngFor="let state of states" [value]="state.id">{{ state.name }}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="validateFormControl.hasError('required')">O estado é
+                                    <strong>obrigatório</strong></mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row text-center">
+                    <div class="col-md -12">
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="!fanForm.valid">
+                                SALVAR
+                            </button>
+                            <button mat-raised-button color="accent" type="button" (click)="close()">
+                                FECHAR
+                            </button>
+                        </mat-card-actions>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+</form>

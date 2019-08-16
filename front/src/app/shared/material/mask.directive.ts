@@ -1,4 +1,4 @@
-import { Directive, HostListener, Input } from '@angular/core';
+import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 import {
     NG_VALUE_ACCESSOR, ControlValueAccessor
 } from '@angular/forms';
@@ -14,15 +14,21 @@ import {
 export class MaskDirective implements ControlValueAccessor {
 
     onTouched: any;
-    onChange: any;
+    onChanges: any;
 
     @Input('appMask') appMask: string;
 
+    constructor(private el: ElementRef) {
+    }
+
     writeValue(value: any): void {
+        if(value){
+            (this.el.nativeElement as HTMLInputElement).value = value;
+        }
     }
 
     registerOnChange(fn: any): void {
-        this.onChange = fn;
+        this.onChanges = fn;
     }
 
     registerOnTouched(fn: any): void {
@@ -37,12 +43,12 @@ export class MaskDirective implements ControlValueAccessor {
 
         // retorna caso pressionado backspace
         if ($event.keyCode === 8) {
-            this.onChange(valor);
+            this.onChanges(valor);
             return;
         }
 
         if (valor.length <= pad.length) {
-            this.onChange(valor);
+            this.onChanges(valor);
         }
 
         var valorMaskPos = 0;
@@ -66,7 +72,7 @@ export class MaskDirective implements ControlValueAccessor {
         if ($event.target.value.length === this.appMask.length) {
             return;
         }
-        this.onChange('');
+        this.onChanges('');
         $event.target.value = '';
     }
 }

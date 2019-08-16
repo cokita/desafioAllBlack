@@ -19,3 +19,14 @@ if (!function_exists('validate')) {
     }
 
 }
+
+if (!function_exists('only_numbers')) {
+    function only_numbers($valor)
+    {
+        if($valor){
+            return preg_replace("/[^0-9]/", "", trim($valor));
+        }else{
+            return null;
+        }
+    }
+}

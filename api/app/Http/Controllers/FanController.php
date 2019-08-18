@@ -52,6 +52,14 @@ class FanController extends Controller
             $fans->where('name','LIKE',"%{$data['name']}%");
         }
 
+        if(!empty($data['email'])){
+            $fans->where('email','LIKE',"%{$data['email']}%");
+        }
+
+        if(!empty($data['phone'])){
+            $fans->where('phone',$data['phone']);
+        }
+
         if(!empty($data['active'])){
             $fans->where('active','=', $data['active']);
         }

@@ -6,13 +6,17 @@ use App\Models\Address;
 use App\Models\Fan;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
-class FanService extends Service {
+class FanService extends Service
+{
 
     /**
      * @param $data Collection
      */
-    public function save($data){
+    public function save($data)
+    {
         try {
             validate($data->toArray(), [
                 'name' => 'required',
@@ -24,18 +28,28 @@ class FanService extends Service {
             ]);
 
             $fan = new Fan();
-            if($data->get('id')){
+            if ($data->get('id')) {
                 $fan = Fan::find($data->get('id'));
-//                //Não posso permitir mudar o Documento?
-//                $data = $data->except(['document']);
-            }else{
-                validate($data->toArray(), [
-                    'document' => 'unique:fans',
-                    'email' => 'unique:fans'
-                ], [
-                    'document.unique' => 'O documento do torcedor ja existe em nosso banco de dados.',
-                    'email.unique' => 'Já existe este e-mail em nosso banco de dados.',
-                ]);
+                //                //Não posso permitir mudar o Documento?
+                //                $data = $data->except(['document']);
+            } else {
+                $fanExists = Fan::query()
+                    ->where(function ($query) use ($data) {
+                        $query->where('document', $data->get('document'));
+                        if ($data->get('email')) {
+                            $query->orWhere('email', $data->get('email'));
+                        }
+                    })->first();
+                    
+                if ($fanExists) {
+                    if ($fanExists->active == 0) {
+                        $fan = $fanExists;
+                        $fan->active = 1;
+                        $fanExists = null;
+                    } else {
+                        throw new \Exception("Ja existe um torcedor com este e-mail ou com o documento infomrado.");
+                    }
+                }
             }
 
             $fan->fill($data->toArray());
@@ -56,15 +70,15 @@ class FanService extends Service {
                     'address.state' => 'O estado é obrigatório.',
                 ]);
 
-                $address =$data->get('address');
-                if(!empty($address['id'])){
-                   $addressExists = Address::find($address['id']);
-                   if($addressExists) {
-                       $addressExists->active = 0;
-                       $addressExists->save();
-                       $address = $data->get('address');
-                       unset($address['id']);
-                   }
+                $address = $data->get('address');
+                if (!empty($address['id'])) {
+                    $addressExists = Address::find($address['id']);
+                    if ($addressExists) {
+                        $addressExists->active = 0;
+                        $addressExists->save();
+                        $address = $data->get('address');
+                        unset($address['id']);
+                    }
                 }
 
                 $newAddress = new Address();
@@ -77,10 +91,9 @@ class FanService extends Service {
             }
 
             return $fan->load(['address']);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             throw $e;
         }
-
     }
 
     /**
@@ -93,24 +106,26 @@ class FanService extends Service {
         $content = $file->get();
         $xml = simplexml_load_string($content, "SimpleXMLElement");
         $json = json_encode($xml);
-        $array = json_decode($json,TRUE);
+        $array = json_decode($json, TRUE);
         $errors = [];
         $success = 0;
         $linha = 0;
-        if(count($array) <= 0)
+        if (count($array) <= 0)
             throw new \Exception("O arquivo não possui linhas.");
 
         $array = isset($array['torcedor']) ? $array['torcedor'] : $array;
         foreach ($array as $item) {
-            if(empty($item["@attributes"])){
-                $errors[] = "Ops!! Falha ao ler a linha: ". $linha;
+            if (empty($item["@attributes"])) {
+                $errors[] = "Ops!! Falha ao ler a linha: " . $linha;
                 continue;
             }
             $torcedor = $item["@attributes"];
 
-            if(empty($torcedor['nome']) || empty($torcedor['documento']) || empty($torcedor['endereco']) ||
-                empty($torcedor['bairro']) || empty($torcedor['cidade']) || empty($torcedor['uf']) || empty($torcedor['cep'])){
-                $errors[] = "Ops!! Falha na linha: ".$linha.". Registro incompleto! Lembre-se! Cada TAG do torcedor deve conter no mínimo os seguintes campos: 
+            if (
+                empty($torcedor['nome']) || empty($torcedor['documento']) || empty($torcedor['endereco']) ||
+                empty($torcedor['bairro']) || empty($torcedor['cidade']) || empty($torcedor['uf']) || empty($torcedor['cep'])
+            ) {
+                $errors[] = "Ops!! Falha na linha: " . $linha . ". Registro incompleto! Lembre-se! Cada TAG do torcedor deve conter no mínimo os seguintes campos: 
                 Nome, Documento, Endereço, Bairro, Cidade, UF e CEP.";
                 continue;
             }
@@ -130,15 +145,14 @@ class FanService extends Service {
             try {
                 $this->save(collect($newTorcedor));
                 $success++;
-            }catch (\Exception $e){
+            } catch (\Exception $e) {
                 $errors[] =
-                    "O torcedor: ". $torcedor['nome'] . ", com o documento: ".only_numbers($torcedor['documento']).", apresentou os seguinte erro: ". $e->getMessage();
+                    "O torcedor: " . $torcedor['nome'] . ", com o documento: " . only_numbers($torcedor['documento']) . ", apresentou os seguinte erro: " . $e->getMessage();
                 continue;
             }
             $linha++;
         }
 
-        return ['errors' => $errors,'success'=>$success, 'total' => count($array)];
+        return ['errors' => $errors, 'success' => $success, 'total' => count($array)];
     }
-
 }

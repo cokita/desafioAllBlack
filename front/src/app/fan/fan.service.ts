@@ -3,6 +3,7 @@ import {CoreService} from "../core.service";
 import {MatSnackBar} from "@angular/material";
 import {map} from "rxjs/internal/operators";
 import {Router} from "@angular/router";
+import {saveAs as importedSaveAs} from "file-saver";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,6 @@ export class FanService {
   constructor(private coreService: CoreService, private snackBar: MatSnackBar, private router: Router) { }
 
     list(params):any {
-      console.log('aaaaaaaaaa');
         return this.coreService.get(`fan`, params).pipe(map(res => res.data));
     }
 
@@ -33,8 +33,16 @@ export class FanService {
     }
 
     exportFans(data):any{
-        return this.coreService.get(`fan/export`, data, true)
-            .map(res => res.blob())
-            .catch();
+        return this.coreService.download(`fan/export`, data)
+        .subscribe(
+          response => { 
+              var blob = new Blob([response], {type: 'text/csv'});
+              var filename = 'file.csv';
+              importedSaveAs(blob, filename);
+          },
+          error => {
+              console.error(`Error: ${error.message}`);
+          }
+      );
     }
 }

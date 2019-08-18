@@ -5,16 +5,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-3">
             <button mat-mini-fab (click)="fileInput.click()" color="primary"
-                    matTooltip="Clique aqui para fazer o upload de seu arquivo XML.">
+                matTooltip="Clique aqui para fazer o upload de seu arquivo XML.">
                 <mat-icon>cloud_upload</mat-icon>
-                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" accept="text/xml"/>
+                <input #fileInput type="file" (change)="onFileChange($event)" style="display:none;" accept="text/xml" />
             </button>
         </div>
-        <div class="col-md-6 text-right">
-            <button mat-mini-fab (click)="addFan = true">
+        <div class="col-md-3 text-center">
+            <button mat-mini-fab mat-icon-button (click)="sendMail()"
+                matTooltip="Enviar e-mail para todos os torcedores.">
+                <mat-icon>mail</mat-icon>
+            </button>
+        </div>
+        <div class="col-md-3 text-center">
+            <button mat-mini-fab (click)="addFan = true" matTooltip="Cadastrar novo torcedor">
                 <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div class="col-md-3 text-right"  *ngIf="fans && fans.total > 0">
+            <button mat-mini-fab color="primary" (click)="exportFans()"  matTooltip="Foram encontrados {{fans.total}} torcedores. Caso queira exportar este conteúdo para CSV,
+            clique neste botão.">
+                <mat-icon>cloud_download</mat-icon>
             </button>
         </div>
     </div>
@@ -36,11 +48,13 @@
         </div>
         <div class="col-md-12" *ngIf="resultUpload">
             <div class="alert alert-secondary" role="alert">
-                <hr/>
+                <hr />
                 <h4>
-                    <span class="text-danger" *ngIf="resultUpload.status == 'error'">OPS! Parece que tivemos alguns problemas.</span>
-                    <span class="text-success" *ngIf="resultUpload.status == 'success'">Parabéns, seu arquivo foi lido com sucesso e {{resultUpload.data.success}} torcedores foram inseridos
-                            de um total de {{resultUpload.data.total}}.</span>
+                    <span class="text-danger" *ngIf="resultUpload.status == 'error'">OPS! Parece que tivemos alguns
+                        problemas.</span>
+                    <span class="text-success" *ngIf="resultUpload.status == 'success'">Parabéns, seu arquivo foi lido
+                        com sucesso e {{resultUpload.data.success}} torcedores foram inseridos
+                        de um total de {{resultUpload.data.total}}.</span>
                 </h4>
                 <div *ngIf="resultUpload.status == 'error'">
 
@@ -70,7 +84,7 @@
     <div class="row pt-10">
         <mat-card class="col-md-12">
             <div *ngIf="fans && fans.total > 0">
-                <div class="alert alert-info" role="alert">
+<!--<div class="alert alert-info" role="alert">
                     Foram encontrados {{fans.total}} de torcedores. Caso queira exportar este conteúdo para CSV,
                     clique no botão abaixo.
                     <div class="text-right">
@@ -79,42 +93,95 @@
                         </button>
 
                     </div>
+                </div>-->
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                FILTRAR
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form [formGroup]="searchForm" ngNativeValidate (ngSubmit)="getFans()">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Nome" formControlName="name" name="name">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Documento" formControlName="document"
+                                            name="document" id="document" appMask="999.999.999-99">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Email" formControlName="email" name="email">
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Telefone" formControlName="phone" name="phone"
+                                            appMask="(99) 99999-9999">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <button class="mr-20" mat-raised-button color="primary" type="submit">
+                                        BUSCAR
+                                    </button>
+                                    <!--<button mat-raised-button color="accent" type="button" (click)="cleanFilter()">
+                                        LIMPAR
+                                    </button>-->
+                                </div>
+                            </div>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <div class="table-responsive mt-40">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Documento</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Telefone</th>
+                                <th scope="col">#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let fan of fans.data">
+                                <td>{{fan.name}}</td>
+                                <td>{{fan.document}}</td>
+                                <td>{{fan.email}}</td>
+                                <td>{{fan.phone}}</td>
+                                <td>
+                                    <button mat-icon-button (click)="edit(fan)" color="accent"
+                                        matTooltip="Editar Torcedor">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="removeFan(fan)" color="warn"
+                                        matTooltip="Remover Torcedor">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="sendMail(fan)" color="primary"
+                                        matTooltip="Enviar e-mail para o torcedor">
+                                        <mat-icon>mail</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Documento</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Telefone</th>
-                        <th scope="col">#</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let fan of fans.data">
-                        <td>{{fan.name}}</td>
-                        <td>{{fan.document}}</td>
-                        <td>{{fan.email}}</td>
-                        <td>{{fan.phone}}</td>
-                        <td>
-                            <button mat-icon-button (click)="edit(fan)" color="accent">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button (click)="removeFan(fan)" color="warn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <mat-paginator [length]="fans.total"
-                               [pageSize]="10"
-                               [pageSizeOptions]="pageSizeOptions"
-                               (page)="pageEvent = getFans($event)">
+                <mat-paginator [length]="fans.total" [pageSize]="10" [pageSizeOptions]="pageSizeOptions"
+                    (page)="pageEvent = getFans($event)">
                 </mat-paginator>
             </div>
             <div class="alert alert-light" role="alert" *ngIf="!fans || fans.total <= 0">
-                Nenhum torcedor cadastrado até o momento.
+                Nenhum torcedor encontrado.
             </div>
         </mat-card>
     </div>

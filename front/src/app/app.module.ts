@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { FanCreateComponent } from './fan/fan-create/fan-create.component';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {HttpRequestInterceptor} from "./helpers/http-request-interceptor";
+import { SendEmailComponent } from './shared/modal/send-email/send-email.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {HttpRequestInterceptor} from "./helpers/http-request-interceptor";
         AppRoutingModule,
         LayoutModule
     ],
+    entryComponents: [ SendEmailComponent ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
         { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }

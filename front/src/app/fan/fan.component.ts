@@ -1,9 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FanService} from "./fan.service";
 import {FilterPipe} from "ngx-filter-pipe";
-import {MatSnackBar, PageEvent} from "@angular/material";
+import {MatSnackBar, PageEvent, MatDialog} from "@angular/material";
 import {Fan, IFan} from "../models/fan";
-import {saveAs as importedSaveAs} from "file-saver";
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { SendEmailComponent } from '../shared/modal/send-email/send-email.component';
 
 @Component({
     selector: 'app-fan',
@@ -19,22 +20,29 @@ export class FanComponent implements OnInit {
     pageSizeOptions: number[] = [5, 10, 25, 100];
     resultUpload: any;
     pageEvent: PageEvent;
+    searchForm: FormGroup;
 
     constructor(private fanService: FanService, private filter: FilterPipe,
-                private snackBar: MatSnackBar) {
+                private snackBar: MatSnackBar, private formBuilder: FormBuilder,
+                public dialog: MatDialog) {
     }
 
     ngOnInit() {
+        this.searchForm = this.formBuilder.group({
+            name: [''],
+            document: [''],
+            email: [''],
+            phone: ['']
+        });
         this.getFans();
+        
     }
 
     getFans(event?:PageEvent){
          let page = event || {pageIndex:0,pageSize:10}
-         const params = Object.assign(page, {with: 'address', 'active': 1});
-        console.log(params);
+         const params = Object.assign(page, {with: 'address', 'active': 1}, this.searchForm.value);
         this.fanService.list(params).subscribe(result => {
             this.fans = result;
-            console.log(this.fans);
         })
     }
 
@@ -78,7 +86,6 @@ export class FanComponent implements OnInit {
             let file = event.target.files[0];
             this.fileUpload = file;
             this.handleFileSelected(file);
-            console.log(this.fileUpload);
             const reader = new FileReader();
             // reader.onload = e => this.imagePreviewSrc = reader.result;
             reader.readAsDataURL(file);
@@ -120,9 +127,23 @@ export class FanComponent implements OnInit {
     }
 
     exportFans() {
-        this.fanService.exportFans({}).subscribe(blob => {
-            importedSaveAs(blob, 'teste.csv');
-        });
+        this.fanService.exportFans({});
     }
+
+    cleanFilter(){
+        this.searchForm.reset();
+    }
+
+    sendMail(fan?): void {
+        const dialogRef = this.dialog.open(SendEmailComponent, {
+          width: '500px',
+          data: {fan: fan}
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          //console.log('The dialog was closed');
+        });
+      }
+    
 
 }

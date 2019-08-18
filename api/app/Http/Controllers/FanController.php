@@ -44,6 +44,10 @@ class FanController extends Controller
             $fans->where('id', '=', $data['id']);
         }
 
+        if(!empty($data['document'])){
+            $fans->where('document', '=', $data['document']);
+        }
+
         if(!empty($data['name'])){
             $fans->where('name','LIKE',"%{$data['name']}%");
         }
@@ -195,7 +199,7 @@ class FanController extends Controller
                 fclose($csv);
 
                 $headers = array(
-                    'Content-Type: text/csv',
+                    'Content-Type: text/csv; charset=utf-8',
                 );
 
                 return response()->download(storage_path('app/public/') . '/' . $fileName, $fileName, $headers);

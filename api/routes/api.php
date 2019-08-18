@@ -23,6 +23,10 @@ Route::group(['prefix' => 'fan'], function () {
     Route::post('/save-by-file', ['as' => 'fan.save-by-file', 'uses' => 'FanController@saveByFile']);
 });
 
+Route::group(['prefix' => 'mail'], function () {
+    Route::post('/send-mail-fan', ['as' => 'send', 'uses' => 'MailController@sendMailToFan']);
+    Route::post('/send', ['as' => 'send', 'uses' => 'MailController@sendMail']);
+});
 
 
 

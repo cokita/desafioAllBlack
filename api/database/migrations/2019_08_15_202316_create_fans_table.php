@@ -16,9 +16,9 @@ class CreateFansTable extends Migration
         Schema::create('fans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 255);
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->string('document')->unique();
-            $table->string('phone', 11);
+            $table->string('phone', 11)->nullable();
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

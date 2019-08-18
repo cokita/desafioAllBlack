@@ -6,14 +6,17 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {FilterPipeModule} from "ngx-filter-pipe";
 import {NgxSpinnerModule} from "ngx-spinner";
+import { SendEmailComponent } from './modal/send-email/send-email.component';
 
 @NgModule({
-    declarations: [MaskDirective],
+    declarations: [MaskDirective, SendEmailComponent],
     imports: [
         CommonModule,
         MaterialModule,
         FilterPipeModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     exports: [
         CommonModule,
@@ -23,7 +26,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
         ReactiveFormsModule,
         HttpClientModule,
         FilterPipeModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        SendEmailComponent
     ]
 })
 export class SharedModule {

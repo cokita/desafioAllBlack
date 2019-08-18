@@ -24,15 +24,15 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
       DB_USERNAME=homestead
       DB_PASSWORD=secret
       
-  3) Angular 8
+  3) Angular 8, requer Node >= v10.9
     Bootstrap 4 (getbootstrap.com)
     Angular Material (material.angular.io)
       
 # Requisitos para a Instalação (exceto os acima citados):
   1) Composer
-  2) NPM
+  2) NPM 
       
-#Procedimentos para funcionamento:
+# Procedimentos para funcionamento:
   1) BANCO:
     . Entre no seu banco de dados e crie um banco de dados chamado "desafio";
     . Vá na raiz da api, no arquivo .env, na configuração DB_DATABASE, coloque o nome do banco criado: "desafio"
@@ -43,8 +43,10 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     . Dê permissão de escrita nas pastas: "storage" e "bootstrap"
     . Execute na raiz: php artisan key:generate
     . Execute na raiz: php artisan migrate
+    . Para executar, utilize o comando na raiz: php artisan serve
     
   3) FRONT:
     . Entre na raiz e execute: npm install
+    . Execute ng serve
     
   

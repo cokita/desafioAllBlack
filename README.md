@@ -28,7 +28,7 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     Bootstrap 4 (getbootstrap.com)
     Angular Material (material.angular.io)
       
-# Requisitos para a Instalação (exceto os acima sitados):
+# Requisitos para a Instalação (exceto os acima citados):
   1) Composer
   2) NPM
       

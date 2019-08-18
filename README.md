@@ -1,4 +1,4 @@
-# desafioAllBlack
+# Desafio AllBlack
 
 Utilizei a metodologia REST, onde na pasta API está o Backend  e na pasta front, está o FRONTEND.
 

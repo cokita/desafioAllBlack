@@ -7,17 +7,20 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
 
   1) Laravel 5.8
     Com os seguintes requisitos:
-        PHP >= 7.1.3
-        BCMath PHP Extension
-        Ctype PHP Extension
-        JSON PHP Extension
-        Mbstring PHP Extension
-        OpenSSL PHP Extension
-        PDO PHP Extension
-        Tokenizer PHP Extension
-        XML PHP Extension
-        
+      ```
+      PHP >= 7.1.3
+      BCMath PHP Extension
+      Ctype PHP Extension
+      JSON PHP Extension
+      Mbstring PHP Extension
+      OpenSSL PHP Extension
+      PDO PHP Extension
+      Tokenizer PHP Extension
+      XML PHP Extension
+      ```
+
   2) Banco de dados Mysql >= v5
+
     Obs: Deve ser configurado os parâmetros de conexão no .env, caso não exista, copie o .env.example e renomeie para .env: 
       DB_HOST=127.0.0.1
       DB_PORT=3306
@@ -26,6 +29,7 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
       DB_PASSWORD=secret
       
   3) Angular 8, requer Node >= v10.9
+  
     Bootstrap 4 (getbootstrap.com)
     Angular Material (material.angular.io)
       

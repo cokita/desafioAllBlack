@@ -36,20 +36,29 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
 # Procedimentos para funcionamento:
   1) BANCO:
     - Entre no seu banco de dados e crie um banco de dados (schema) chamado "desafio";
+    
     - Vá na raiz da api, no arquivo .env, na configuração DB_DATABASE, coloque o nome do banco criado: "desafio"
     
   2) API:
     - Caso não tenha feito, copie o arquivo .env.example e renomeie para .env e atualize as informações do DB.
+    
     - Abra o terminal, entre na raiz da API, e execute o comando: composer install
+    
     - Dê permissão de escrita nas pastas: "storage" e "bootstrap"
+    
     - Execute na raiz: php artisan key:generate
+    
     - Execute na raiz: php artisan migrate (aqui ele cria toda a estrutura e inserção de dados do Banco de Dados)
+    
     - Para executar, utilize o comando na raiz: php artisan serve
     
   3) FRONT:
     - Abra uma nova instância do terminal
+    
     - Entre na raiz do FRONT e execute: npm install
+    
     - Execute ng serve
+    
     - Abra o browser e informe o endereço: http://localhost:4200
     
   

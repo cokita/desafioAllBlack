@@ -22,7 +22,7 @@ class FanService extends Service
                 'name' => 'required',
                 'document' => 'required|cpf'
             ], [
-                'name' => 'O nome do fan é obrigatório.',
+                'name' => 'O nome do torcedor é obrigatório.',
                 'document.required' => 'O documento do torcedor é obrigatório.',
                 'document.cpf' => 'O documento do torcedor não é válido.',
             ]);
@@ -40,14 +40,14 @@ class FanService extends Service
                             $query->orWhere('email', $data->get('email'));
                         }
                     })->first();
-                    
+
                 if ($fanExists) {
                     if ($fanExists->active == 0) {
                         $fan = $fanExists;
                         $fan->active = 1;
                         $fanExists = null;
                     } else {
-                        throw new \Exception("Ja existe um torcedor com este e-mail ou com o documento infomrado.");
+                        throw new \Exception("Ja existe um torcedor com este e-mail ou com o documento informado.");
                     }
                 }
             }
@@ -147,7 +147,7 @@ class FanService extends Service
                 $success++;
             } catch (\Exception $e) {
                 $errors[] =
-                    "O torcedor: " . $torcedor['nome'] . ", com o documento: " . only_numbers($torcedor['documento']) . ", apresentou os seguinte erro: " . $e->getMessage();
+                    "O torcedor: " . $torcedor['nome'] . ", com o documento: " . only_numbers($torcedor['documento']) . ", apresentou o seguinte erro: " . $e->getMessage();
                 continue;
             }
             $linha++;

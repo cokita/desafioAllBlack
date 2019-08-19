@@ -61,7 +61,7 @@
                     <p>Do total de {{resultUpload.data.total}} torcedores, {{resultUpload.data.success}} foram inseridos
                         com
                         sucesso e
-                        {{resultUpload.data.errors.length}} falharam.</p>
+                        {{resultUpload.data.errors.length}} falhou(aram).</p>
                     <div *ngFor="let error of resultUpload.data.errors; let i = index">
                         <b>{{i+1}}) </b>{{error}}<br>
                     </div>
@@ -84,16 +84,6 @@
     <div class="row pt-10">
         <mat-card class="col-md-12">
             <div *ngIf="fans && fans.total > 0">
-<!--<div class="alert alert-info" role="alert">
-                    Foram encontrados {{fans.total}} de torcedores. Caso queira exportar este conteúdo para CSV,
-                    clique no botão abaixo.
-                    <div class="text-right">
-                        <button mat-raised-button color="primary" type="button" (click)="exportFans()">
-                            EXPORTAR
-                        </button>
-
-                    </div>
-                </div>-->
                 <mat-accordion>
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
@@ -149,7 +139,7 @@
                                 <th scope="col">Documento</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Telefone</th>
-                                <th scope="col">#</th>
+                                <th scope="col">Ações</th>
                             </tr>
                         </thead>
                         <tbody>

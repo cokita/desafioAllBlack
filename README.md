@@ -1,4 +1,4 @@
-# Desafio AllBlack
+# Desafio AllBlacks
 
 Utilizei a metodologia REST, onde na pasta API está o Backend  e na pasta front, está o FRONTEND.
 Utulizei também toda a criação das tabelas e inserção dos dados com o MIGRATION do próprio LARAVEL, portanto, não anexei o script do banco.

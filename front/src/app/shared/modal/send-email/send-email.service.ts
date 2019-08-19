@@ -26,7 +26,7 @@ export class SendEmailService {
       .subscribe(result => {
         let msg = 'E-mails enviados com sucesso.';
         if(result.status == 'error'){
-          msg = 'Ops! '+result.data.errors.length+' e-mail(s) não pode(puderam) ser enviado(s).';
+          msg = 'Ops! '+result.data.errors.length+' e-mail(s) não pode(uderam) ser enviado(s).';
         }
         this.snackBar.open(msg, null, {
           duration: 2000,

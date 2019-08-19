@@ -60,14 +60,16 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     - Para executar, utilize o comando na raiz: php artisan serve
     
     - Para o envio de e-mail, utilizei uma conta minha do GMail (de teste), caso queiram alterar, sintam-se a vontade editando o arquivo .env, nas seguintes configurações:
-    MAIL_DRIVER=smtp
-    MAIL_HOST=smtp.gmail.com
-    MAIL_PORT=587
-    MAIL_USERNAME='cokitabr2@gmail.com'
-    MAIL_PASSWORD='xxxxxxxxxxxx'
-    MAIL_ENCRYPTION=tls
-    MAIL_FROM_ADDRESS=cokitabr@gmail.com
-    MAIL_FROM_NAME='Ana Flávia Carvalho'
+        MAIL_DRIVER=smtp
+        MAIL_HOST=smtp.gmail.com
+        MAIL_PORT=587
+        MAIL_USERNAME='cokitabr2@gmail.com'
+        MAIL_PASSWORD='xxxxxxxxxxxx'
+        MAIL_ENCRYPTION=tls
+        MAIL_FROM_ADDRESS=cokitabr@gmail.com
+        MAIL_FROM_NAME='Ana Flávia Carvalho'
+        
+      - Para testar, abra o navegador e informe o endereço: http://127.0.0.1:8000, deve aparecer uma tela em branco escrito LARAVEL. Isso quer dizer que nossa API está funcionando e pronta para uso. Vamos para o FRONT!
     
     
   3) FRONT:
@@ -80,4 +82,5 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     
     - Abra o browser e informe o endereço: http://localhost:4200
     
+    PRONTO!!! :)
   

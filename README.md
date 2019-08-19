@@ -41,7 +41,7 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
 # Procedimentos para funcionamento:
   1) BANCO:
   
-    - Entre no seu banco de dados e crie um banco de dados (schema) chamado "desafio";
+    - Entre no seu banco de dados e crie um banco de dados (schema) chamado "desafio"; (CREATE SCHEMA desafio;)
     
     - Vá na raiz da api, no arquivo .env, na configuração DB_DATABASE, coloque o nome do banco criado: "desafio"
     

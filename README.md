@@ -1,7 +1,7 @@
 # Desafio AllBlacks
 
 Utilizei a metodologia REST, onde na pasta API está o Backend  e na pasta front, está o FRONTEND.
-Utulizei também toda a criação das tabelas e inserção dos dados com o MIGRATION do próprio LARAVEL, portanto, não anexei o script do banco.
+Utilizei também toda a criação das tabelas e inserção dos dados com o MIGRATION do próprio LARAVEL, portanto, não anexei o script do banco.
 
 Para este desafio foi utilizado as seguintes ferramentas/frameworks:
 
@@ -34,16 +34,19 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     Angular Material (material.angular.io)
       
 # Requisitos para a Instalação (exceto os acima citados):
+
   1) Composer
   2) NPM 
       
 # Procedimentos para funcionamento:
   1) BANCO:
+  
     - Entre no seu banco de dados e crie um banco de dados (schema) chamado "desafio";
     
     - Vá na raiz da api, no arquivo .env, na configuração DB_DATABASE, coloque o nome do banco criado: "desafio"
     
   2) API:
+  
     - Caso não tenha feito, copie o arquivo .env.example e renomeie para .env e atualize as informações do DB.
     
     - Abra o terminal, entre na raiz da API, e execute o comando: composer install
@@ -56,7 +59,19 @@ Para este desafio foi utilizado as seguintes ferramentas/frameworks:
     
     - Para executar, utilize o comando na raiz: php artisan serve
     
+    - Para o envio de e-mail, utilizei uma conta minha do GMail (de teste), caso queiram alterar, sintam-se a vontade editando o arquivo .env, nas seguintes configurações:
+    MAIL_DRIVER=smtp
+    MAIL_HOST=smtp.gmail.com
+    MAIL_PORT=587
+    MAIL_USERNAME='cokitabr2@gmail.com'
+    MAIL_PASSWORD='xxxxxxxxxxxx'
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS=cokitabr@gmail.com
+    MAIL_FROM_NAME='Ana Flávia Carvalho'
+    
+    
   3) FRONT:
+  
     - Abra uma nova instância do terminal
     
     - Entre na raiz do FRONT e execute: npm install
